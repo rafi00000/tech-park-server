@@ -38,7 +38,13 @@ async function run() {
         res.send(result);
     })
 
-
+    app.get('/product/:name', async(req, res) =>{
+        const name = req.params.name.toLocaleLowerCase();
+        const query = { brand: name };
+        const cursor = await productCollection.find(query).toArray();
+        console.log(cursor);
+        res.send(cursor);
+    })
 
 
 
