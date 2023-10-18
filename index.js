@@ -25,6 +25,7 @@ async function run() {
     await client.connect();
 
     const productCollection = client.db("shopDB").collection('products');
+    const categories = client.db("shopDB").collection('Category');
 
     app.get('/product', async(req, res) =>{
         const cursor = await productCollection.find().toArray();
@@ -42,12 +43,22 @@ async function run() {
         const name = req.params.name.toLocaleLowerCase();
         const query = { brand: name };
         const cursor = await productCollection.find(query).toArray();
-        console.log(cursor);
         res.send(cursor);
     })
 
 
 
+    // category post
+    app.get('/category', async(req, res)=>{
+      const cursor = await categories.find().toArray();
+      res.send(cursor);
+    })
+
+    app.post('/category', async(req, res)=>{
+      const categoryItem = req.body;
+      const result = await categories.insertOne(categoryItem);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
