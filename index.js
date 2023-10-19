@@ -26,6 +26,7 @@ async function run() {
 
     const productCollection = client.db("shopDB").collection('products');
     const categories = client.db("shopDB").collection('Category');
+    const cartCollection = client.db("shopDB").collection('cart');
 
     app.get('/product', async(req, res) =>{
         const cursor = await productCollection.find().toArray();
@@ -55,7 +56,7 @@ async function run() {
 
 
 
-    // category post
+    // category post--------------
     app.get('/category', async(req, res)=>{
       const cursor = await categories.find().toArray();
       res.send(cursor);
@@ -64,6 +65,23 @@ async function run() {
     app.post('/category', async(req, res)=>{
       const categoryItem = req.body;
       const result = await categories.insertOne(categoryItem);
+      res.send(result);
+    })
+
+
+    // cart operation-----------
+
+
+    app.get('/cart', async(req, res)=>{
+      const cursor = await cartCollection.find().toArray();
+      console.log(cursor)
+      res.send(cursor);
+    })
+
+    app.post('/cart', async(req, res)=>{
+      const data = req.body;
+      const result = await cartCollection.insertOne(data);
+      console.log('add to cart req: ', result)
       res.send(result);
     })
 
