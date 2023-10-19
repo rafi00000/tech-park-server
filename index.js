@@ -2,12 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // middleware
 app.use(cors());
 app.use(express.json())
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://delwar2021bd:abjqmFGOZFbsbGoR@cluster0.mn7153h.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -44,6 +44,13 @@ async function run() {
         const query = { brand: name };
         const cursor = await productCollection.find(query).toArray();
         res.send(cursor);
+    })
+
+    app.get('/productDetails/:id', async(req, res) =>{
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const cursor = await productCollection.findOne(query);
+      res.send(cursor);
     })
 
 
