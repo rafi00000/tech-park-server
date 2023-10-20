@@ -60,6 +60,7 @@ async function run() {
       const newUpdatedProduct = req.body;
       const filter = { _id: new ObjectId(id) };
       const option = { upsert: true };
+      
       const updateProduct = {
         $set: {
           name: newUpdatedProduct.name,
