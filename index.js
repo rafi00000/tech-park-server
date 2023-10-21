@@ -81,6 +81,12 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/featured", async (req, res) => {
+      const query = { featured: "true" };
+      const cursor = await productCollection.find(query).toArray();
+      res.send(cursor);
+    });
+
     // category post--------------
     app.get("/category", async (req, res) => {
       const cursor = await categories.find().toArray();
