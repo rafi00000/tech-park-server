@@ -6,11 +6,14 @@ const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 // middleware
-app.use(cors());
+app.use(cors({
+  origin: ["https://tech-park-client.vercel.app", "http://localhost:5173"],
+  credentials: true
+}));
 app.use(express.json());
 
 const uri =
-  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mn7153h.mongodb.net/?retryWrites=true&w=majority`;
+  `mongodb+srv://delwar2021bd:koajaibona1@cluster0.mn7153h.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -24,8 +27,6 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
-
     const productCollection = client.db("shopDB").collection("products");
     const categories = client.db("shopDB").collection("Category");
     const cartCollection = client.db("shopDB").collection("cart");
@@ -123,7 +124,7 @@ async function run() {
     });
 
     // Send a ping to confirm a successful connection
-    // await client.db("admin").command({ ping: 1 });
+    await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
