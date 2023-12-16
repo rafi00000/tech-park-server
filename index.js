@@ -30,6 +30,7 @@ async function run() {
     const productCollection = client.db("shopDB").collection("products");
     const categories = client.db("shopDB").collection("Category");
     const cartCollection = client.db("shopDB").collection("cart");
+    const reviewCollection = client.db("shopDB").collection("review");
 
     app.get("/product", async (req, res) => {
       const cursor = await productCollection.find().toArray();
@@ -122,6 +123,14 @@ async function run() {
       const result = await cartCollection.deleteOne(query);
       res.send(result);
     });
+
+    // this is new feature
+    // user can give review to this web
+    app.post("/review", async(req, res) =>{
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
