@@ -105,7 +105,9 @@ async function run() {
     // cart operation-----------
 
     app.get("/cart", async (req, res) => {
-      const cursor = await cartCollection.find().toArray();
+      const query = req.query.email;
+      console.log(query)
+      const cursor = await cartCollection.find({email: query}).toArray();
       console.log(cursor);
       res.send(cursor);
     });
@@ -126,10 +128,14 @@ async function run() {
 
     // this is new feature
     // user can give review to this web
-    app.post("/review", async(req, res) =>{
+    app.post("/feedback", async(req, res) =>{
       const review = req.body;
       const result = await reviewCollection.insertOne(review);
       res.send(result);
+    })
+    app.get("/feedback", async(req, res) =>{
+      const cursor = await reviewCollection.find().toArray();
+      res.send(cursor);
     })
 
     // Send a ping to confirm a successful connection
